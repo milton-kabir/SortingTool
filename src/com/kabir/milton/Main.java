@@ -1,6 +1,8 @@
 //package sorting;
 package com.kabir.milton;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class Main {
@@ -25,9 +27,17 @@ public class Main {
         return temp;
     }
 
-    public static void main(final String[] args) {
+    public static void main(final String[] args) throws IOException {
         String st = "word";
         String tt = "natural";
+        String rr = "read", ww = "write";
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].equals("-inputFile")) {
+                rr = args[i + 1];
+            } else if (args[i].equals("-outputFile")) {
+                ww = args[i + 1];
+            }
+        }
         int ck = 0;
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("java") || args[i].equals("SortingTool")) {
@@ -35,29 +45,63 @@ public class Main {
             }
             if (args[i].equals("-dataType")) {
                 if (i + 1 == args.length) {
-                    System.out.println("No data type defined!");
+                    if (!ww.equals("write")) {
+                        FileWriter myWriter = new FileWriter(ww);
+                        myWriter.write("No data type defined!");
+                        myWriter.close();
+
+                    } else {
+                        System.out.println("No data type defined!");
+                    }
                     return;
                 }
                 st = args[i + 1];
                 if (!st.equals("long") && !st.equals("word") && !st.equals("line")) {
-                    System.out.println("No data type defined!");
+                    if (!ww.equals("write")) {
+                        FileWriter myWriter = new FileWriter(ww);
+                        myWriter.write("No data type defined!");
+                        myWriter.close();
+
+                    } else {
+                        System.out.println("No data type defined!");
+                    }
                     return;
                 }
                 i++;
 
             } else if (args[i].equals("-sortingType")) {
                 if (i + 1 == args.length) {
-                    System.out.println("No sorting type defined!");
+                    if (!ww.equals("write")) {
+                        FileWriter myWriter = new FileWriter(ww);
+                        myWriter.write("No sorting type defined!");
+                        myWriter.close();
+
+                    } else {
+                        System.out.println("No sorting type defined!");
+                    }
                     return;
                 }
                 tt = args[i + 1];
                 if (!tt.equals("byCount") && !tt.equals("natural")) {
-                    System.out.println("No sorting type defined!");
+                    if (!ww.equals("write")) {
+                        FileWriter myWriter = new FileWriter(ww);
+                        myWriter.write("No sorting type defined!");
+                        myWriter.close();
+
+                    } else {
+                        System.out.println("No sorting type defined!");
+                    }
                     return;
                 }
                 i++;
             } else {
-                System.out.println("\"" + args[i] + "\" is not a valid parameter. It will be skipped.");
+                if (!ww.equals("write")) {
+                    FileWriter myWriter = new FileWriter(ww);
+                    myWriter.write("\"" + args[i] + "\" is not a valid parameter. It will be skipped.");
+                    myWriter.close();
+                } else {
+                    System.out.println("\"" + args[i] + "\" is not a valid parameter. It will be skipped.");
+                }
             }
 
         }

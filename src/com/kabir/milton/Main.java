@@ -30,12 +30,36 @@ public class Main {
         String tt = "natural";
         int ck = 0;
         for (int i = 0; i < args.length; i++) {
+            if (args[i].equals("java") || args[i].equals("SortingTool")) {
+                continue;
+            }
             if (args[i].equals("-dataType")) {
+                if (i + 1 == args.length) {
+                    System.out.println("No data type defined!");
+                    return;
+                }
                 st = args[i + 1];
-            }
-            if (args[i].equals("-sortingType")) {
+                if (!st.equals("long") && !st.equals("word") && !st.equals("line")) {
+                    System.out.println("No data type defined!");
+                    return;
+                }
+                i++;
+
+            } else if (args[i].equals("-sortingType")) {
+                if (i + 1 == args.length) {
+                    System.out.println("No sorting type defined!");
+                    return;
+                }
                 tt = args[i + 1];
+                if (!tt.equals("byCount") && !tt.equals("natural")) {
+                    System.out.println("No sorting type defined!");
+                    return;
+                }
+                i++;
+            } else {
+                System.out.println("\"" + args[i] + "\" is not a valid parameter. It will be skipped.");
             }
+
         }
         if (st.equals("long")) {
             Scanner scanner = new Scanner(System.in);

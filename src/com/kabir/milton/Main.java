@@ -7,20 +7,9 @@ import java.util.*;
 
 public class Main {
     public static HashMap<String, Integer> sortByValue(HashMap<String, Integer> hm) {
-        // Create a list from elements of HashMap
-        List<Map.Entry<String, Integer>> list =
-                new LinkedList<Map.Entry<String, Integer>>(hm.entrySet());
-
-        // Sort the list
-        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
-            public int compare(Map.Entry<String, Integer> o1,
-                               Map.Entry<String, Integer> o2) {
-                return (o1.getValue()).compareTo(o2.getValue());
-            }
-        });
-
-        // put data from sorted list to hashmap
-        HashMap<String, Integer> temp = new LinkedHashMap<String, Integer>();
+        var list = new LinkedList<>(hm.entrySet());
+        list.sort(Map.Entry.comparingByValue());
+        var temp = new LinkedHashMap<String, Integer>();
         for (Map.Entry<String, Integer> aa : list) {
             temp.put(aa.getKey(), aa.getValue());
         }
@@ -30,15 +19,12 @@ public class Main {
     public static void main(final String[] args) throws IOException {
         String st = "word";
         String tt = "natural";
-        String rr = "read", ww = "write";
+        String ww = "write";
         for (int i = 0; i < args.length; i++) {
-            if (args[i].equals("-inputFile")) {
-                rr = args[i + 1];
-            } else if (args[i].equals("-outputFile")) {
+            if (args[i].equals("-outputFile")) {
                 ww = args[i + 1];
             }
         }
-        int ck = 0;
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("java") || args[i].equals("SortingTool")) {
                 continue;
@@ -46,10 +32,9 @@ public class Main {
             if (args[i].equals("-dataType")) {
                 if (i + 1 == args.length) {
                     if (!ww.equals("write")) {
-                        FileWriter myWriter = new FileWriter(ww);
+                        var myWriter = new FileWriter(ww);
                         myWriter.write("No data type defined!");
                         myWriter.close();
-
                     } else {
                         System.out.println("No data type defined!");
                     }
@@ -58,21 +43,19 @@ public class Main {
                 st = args[i + 1];
                 if (!st.equals("long") && !st.equals("word") && !st.equals("line")) {
                     if (!ww.equals("write")) {
-                        FileWriter myWriter = new FileWriter(ww);
+                        var myWriter = new FileWriter(ww);
                         myWriter.write("No data type defined!");
                         myWriter.close();
-
                     } else {
                         System.out.println("No data type defined!");
                     }
                     return;
                 }
                 i++;
-
             } else if (args[i].equals("-sortingType")) {
                 if (i + 1 == args.length) {
                     if (!ww.equals("write")) {
-                        FileWriter myWriter = new FileWriter(ww);
+                        var myWriter = new FileWriter(ww);
                         myWriter.write("No sorting type defined!");
                         myWriter.close();
 
@@ -84,7 +67,7 @@ public class Main {
                 tt = args[i + 1];
                 if (!tt.equals("byCount") && !tt.equals("natural")) {
                     if (!ww.equals("write")) {
-                        FileWriter myWriter = new FileWriter(ww);
+                        var myWriter = new FileWriter(ww);
                         myWriter.write("No sorting type defined!");
                         myWriter.close();
 
@@ -96,7 +79,7 @@ public class Main {
                 i++;
             } else {
                 if (!ww.equals("write")) {
-                    FileWriter myWriter = new FileWriter(ww);
+                    var myWriter = new FileWriter(ww);
                     myWriter.write("\"" + args[i] + "\" is not a valid parameter. It will be skipped.");
                     myWriter.close();
                 } else {
@@ -106,14 +89,13 @@ public class Main {
 
         }
         if (st.equals("long")) {
-            Scanner scanner = new Scanner(System.in);
-            Set<Long> ar = new HashSet<>();
-            HashMap<String, Integer> hm = new HashMap<>();
+            var scanner = new Scanner(System.in);
+            var ar = new HashSet<Long>();
+            var hm = new HashMap<String, Integer>();
             int sz = 0;
             while (scanner.hasNextLong()) {
                 long number = scanner.nextLong();
                 sz++;
-                // write your code here
                 ar.add(number);
                 if (hm.containsKey(Long.toString(number))) {
                     int xx = hm.get(Long.toString(number));
@@ -123,9 +105,8 @@ public class Main {
                     hm.put(Long.toString(number), 1);
                 }
             }
-            List<Long> list = new ArrayList<Long>(ar);
+            var list = new ArrayList<>(ar);
             Collections.sort(list);
-
             System.out.println("Total numbers: " + sz + ".");
             if (tt.equals("natural")) {
                 System.out.print("Sorted data:");
@@ -139,87 +120,50 @@ public class Main {
                 Map<String, Integer> hm1 = sortByValue(hm);
                 for (String ii : hm1.keySet()) {
                     int pq = 100 * hm1.get(ii) / sz;
-                    String ts = ii;
                     int xx = hm1.get(ii);
-                    List<Long> mm = new ArrayList<>();
-                    for (int jj = 0; jj < list.size(); jj++) {
-                        String sss = Long.toString(list.get(jj));
+                    var mm = new ArrayList<Long>();
+                    for (Long aLong : list) {
+                        String sss = Long.toString(aLong);
                         if (hm.get(sss) == xx) {
-                            mm.add(list.get(jj));
+                            mm.add(aLong);
                         }
                     }
-                    for (int i = 0; i < mm.size(); i++) {
-                        System.out.println(mm.get(i) + ": " + xx + " time(s), " + pq + "%");
-                        list.remove(mm.get(i));
+                    for (Long aLong : mm) {
+                        System.out.println(aLong + ": " + xx + " time(s), " + pq + "%");
+                        list.remove(aLong);
                     }
 
                 }
 
             }
         } else if (st.equals("word")) {
-            Scanner scanner = new Scanner(System.in);
-            HashMap<String, Integer> hm = new HashMap<>();
-            HashMap<String, Integer> myMap = new HashMap<>();
-            ArrayList<String> ss = new ArrayList<>();
+            var scanner = new Scanner(System.in);
+            var myMap = new HashMap<String, Integer>();
+            var ss = new ArrayList<String>();
             int sz = 0;
             while (scanner.hasNextLine()) {
                 String[] number = scanner.nextLine().split("\\s+");
-                // write your code here
                 sz += number.length;
-                for (int i = 0; i < number.length; i++) {
-                    ss.add(number[i]);
-                    if (myMap.containsKey(number[i])) {
-                        int xx = myMap.get(number[i]);
+                for (String s : number) {
+                    ss.add(s);
+                    if (myMap.containsKey(s)) {
+                        int xx = myMap.get(s);
                         xx++;
-                        myMap.put(number[i], xx);
+                        myMap.put(s, xx);
                     } else {
-                        myMap.put(number[i], 1);
+                        myMap.put(s, 1);
                     }
                 }
             }
-            Map<String, Integer> hm1 = sortByValue(myMap);
-            Collections.sort(ss);
-            Set<String> ar = new HashSet<>();
-            ar.addAll(ss);
-
-            System.out.println("Total words: " + sz + ".");
-            if (tt.equals("natural")) {
-                System.out.print("Sorted data:");
-                for (int i = 0; i < ss.size(); i++) {
-                    System.out.print(" " + ss.get(i));
-                }
-
-            } else {
-                for (String ii : hm1.keySet()) {
-                    int pq = 100 * hm1.get(ii) / sz;
-                    String ts = ii;
-                    int xx = hm1.get(ii);
-                    List<String> mm = new ArrayList<>();
-                    for (String jj : ar) {
-                        String sss = jj;
-                        //System.out.println(sss);
-                        if (hm1.get(sss) == xx) {
-                            mm.add(jj);
-                        }
-                    }
-                    Collections.sort(mm);
-                    for (int i = 0; i < mm.size(); i++) {
-                        System.out.println(mm.get(i) + ": " + xx + " time(s), " + pq + "%");
-                        ar.remove(mm.get(i));
-                    }
-
-                }
-
-            }
+            myFun(tt, myMap, ss, sz);
 
         } else {
-            Scanner scanner = new Scanner(System.in);
-            HashMap<String, Integer> myMap = new HashMap<>();
-            ArrayList<String> ss = new ArrayList<>();
+            var scanner = new Scanner(System.in);
+            var myMap = new HashMap<String, Integer>();
+            var ss = new ArrayList<String>();
             int sz = 0;
             while (scanner.hasNextLine()) {
                 String number = scanner.nextLine();
-                // write your code here
                 ss.add(number);
                 if (myMap.containsKey(number)) {
                     int xx = myMap.get(number);
@@ -230,43 +174,35 @@ public class Main {
                 }
                 sz++;
             }
-            Map<String, Integer> hm1 = sortByValue(myMap);
-            Collections.sort(ss);
-            Set<String> ar = new HashSet<>();
-            ar.addAll(ss);
-            System.out.println("Total words: " + sz + ".");
-            if (tt.equals("natural")) {
-
-                System.out.print("Sorted data:");
-                for (int i = 0; i < ss.size(); i++) {
-                    System.out.print(" " + ss.get(i));
-                }
-
-            } else {
-
-                for (String ii : hm1.keySet()) {
-                    int pq = 100 * hm1.get(ii) / sz;
-                    String ts = ii;
-                    int xx = hm1.get(ii);
-                    List<String> mm = new ArrayList<>();
-                    for (String jj : ar) {
-                        String sss = jj;
-                        //System.out.println(sss);
-                        if (hm1.get(sss) == xx) {
-                            mm.add(jj);
-                        }
-                    }
-                    Collections.sort(mm);
-                    for (int i = 0; i < mm.size(); i++) {
-                        System.out.println(mm.get(i) + ": " + xx + " time(s), " + pq + "%");
-                        ar.remove(mm.get(i));
-                    }
-
-                }
-
-
+            myFun(tt, myMap, ss, sz);
+        }
+    }
+    private static void myFun(String tt, HashMap<String, Integer> myMap, ArrayList<String> ss, int sz) {
+        Map<String, Integer> hm1 = sortByValue(myMap);
+        Collections.sort(ss);
+        var ar = new HashSet<>(ss);
+        System.out.println("Total words: " + sz + ".");
+        if (tt.equals("natural")) {
+            System.out.print("Sorted data:");
+            for (String s : ss) {
+                System.out.print(" " + s);
             }
-
+        } else {
+            for (String ii : hm1.keySet()) {
+                int pq = 100 * hm1.get(ii) / sz;
+                int xx = hm1.get(ii);
+                var mm = new ArrayList<String>();
+                for (String jj : ar) {
+                    if (hm1.get(jj) == xx) {
+                        mm.add(jj);
+                    }
+                }
+                Collections.sort(mm);
+                for (String s : mm) {
+                    System.out.println(s + ": " + xx + " time(s), " + pq + "%");
+                    ar.remove(s);
+                }
+            }
         }
     }
 }

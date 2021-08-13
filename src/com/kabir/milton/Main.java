@@ -27,11 +27,34 @@ public class Main {
 
     public static void main(final String[] args) {
         String st = "word";
+        int ck = 0;
         for (int i = 0; i < args.length; i++) {
             if (args[i].equals("-dataType")) {
                 st = args[i + 1];
             }
+            if (args[i].equals("-sortIntegers")) {
+                ck = 1;
+            }
         }
+        if (ck == 1) {
+            Scanner scanner = new Scanner(System.in);
+            ArrayList<Long> ar = new ArrayList<>();
+            while (scanner.hasNextLong()) {
+                long number = scanner.nextLong();
+                // write your code here
+                ar.add(number);
+            }
+            Collections.sort(ar);
+            int sz = ar.size();
+            System.out.println("Total numbers: " + sz + ".");
+            System.out.print("Sorted data:");
+            for (int i = 0; i < ar.size(); i++) {
+                System.out.print(" " + ar.get(i));
+            }
+
+            return;
+        }
+
         if (st.equals("long")) {
             Scanner scanner = new Scanner(System.in);
             ArrayList<Long> ar = new ArrayList<>();
